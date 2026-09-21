@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC713 Houston Texas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --term-amber: #FFB000;
+            --term-bg: #0a0800; /* Very deep amber-tinted black */
+            --term-glow: rgba(255, 176, 0, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--term-bg);
+            color: var(--term-amber);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-shadow: 0 0 5px var(--term-glow), 0 0 2px var(--term-glow);
+        }
+
+        /* The CRT Screen wrapper */
+        .crt-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        /* Scanlines pseudo-element */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 100;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Subtle screen flicker */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(255, 176, 0, 0.02);
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.015; }
+            50% { opacity: 0.03; }
+            100% { opacity: 0.01; }
+        }
+
+        /* Text selection inverted styling */
+        ::selection {
+            background-color: var(--term-amber);
+            color: var(--term-bg);
+            text-shadow: none;
+        }
+
+        header {
+            border-bottom: 2px dashed var(--term-amber);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            overflow-x: auto; /* Allow scrolling on tiny screens to avoid breaking layout */
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1rem; /* Adjust based on ascii art size */
+            line-height: 1.1;
+            white-space: pre;
+            text-align: left;
+            display: inline-block;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--term-amber);
+            font-family: inherit;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            text-shadow: inherit;
+            transition: all 0.2s ease;
+        }
+
+        nav button:hover, nav button.active {
+            border: 1px solid var(--term-amber);
+            background: rgba(255, 176, 0, 0.1);
+        }
+
+        nav button::before { content: "[ "; }
+        nav button::after { content: " ]"; }
+
+        main {
+            flex-grow: 1;
+        }
+
+        .section {
+            display: none;
+            animation: turnOn 0.4s ease-out forwards;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes turnOn {
+            0% { opacity: 0; transform: scale(0.98) translateY(5px); filter: brightness(0.5); }
+            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
+        }
+
+        h1, h2, h3 {
+            font-weight: normal;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        ul li::before {
+            content: "> ";
+            color: var(--term-amber);
+        }
+
+        a {
+            color: var(--term-amber);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--term-amber);
+        }
+        
+        a:hover {
+            background-color: var(--term-amber);
+            color: var(--term-bg);
+            text-shadow: none;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: var(--term-amber);
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        footer {
+            margin-top: 3rem;
+            border-top: 1px dashed var(--term-amber);
+            padding-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="crt-container">
+        <header>
+            <div class="logo-container">
+<pre class="logo">
+ ██████████     █████████     ██████████ ████   ████████ 
+░░███░░░░███   ███░░░░░███   ░███░░░░███░░███  ███░░░░███
+ ░███   ░░███ ███     ░░░    ░░░    ███  ░███ ░░░    ░███
+ ░███    ░███░███                  ███   ░███    ██████░ 
+ ░███    ░███░███                 ███    ░███   ░░░░░░███
+ ░███    ███ ░░███     ███       ███     ░███  ███   ░███
+ ██████████   ░░█████████       ███      █████░░████████ 
+░░░░░░░░░░     ░░░░░░░░░       ░░░      ░░░░░  ░░░░░░░░  
+                                                         
+                                                         
+                                                         
+                                  
+                                                     
+         >> SYSTEM ONLINE_
+</pre>
+            </div>
+            <nav id="main-nav">
+                <button onclick="switchTab('home')" class="active" id="btn-home">HOME</button>
+                <button onclick="switchTab('contacts')" id="btn-contacts">CONTACTS</button>
+                <button onclick="switchTab('community')" id="btn-community">COMMUNITY</button>
+            </nav>
+        </header>
+
+        <main>
+            <section id="home" class="section active">
+                <h2>Welcome to DC 713 Houston's central DEFCON group</h2>
+                <p>Establishing secure connection... Done.</p>
+                <p>Hacker Curious? DC713 meets every month! On the second Thursday of every month the group  meets up in person for:</p>
+		<ul>
+			<li>talks given by members</li>
+			<li>training sessions</li>
+			<li>software/hardware projects</li>
+			<li>shenanigans</li>
+			<li>networking</li>
+			<li>skill sharing</li>
+                </ul>
+		
+                <p>Navigate using the command keys above to access directory files.<span class="cursor"></span></p>
+            </section>
+
+            <section id="contacts" class="section">
+                <h2>Communications Protocol</h2>
+                <p>Awaiting transmission... Please use the following channels to initiate contact sequences.</p>
+                
+                <ul style="margin-top: 2rem;">
+                    <li><strong>EMAIL:</strong> g0rd0(at)killthegibson.com</li>
+                    <li><strong>GITHUB:</strong> <a href="#" target="_blank">---TBA---</a></li>
+                    <li><strong>PGP KEY:</strong> 0xABCD1234E567890F</li>
+                </ul>
+
+                <p style="margin-top: 2rem;">
+                    [WARNING] All transmissions are monitored by system administrator. Secure your payload before execution.
+                </p>
+                <p>End of transmission.<span class="cursor"></span></p>
+            </section>
+
+            <section id="community" class="section">
+                <h2>Sector 7G - Community Hub</h2>
+                <p>Loading user nodes...</p>
+                <p>Find your hacker family. We share code, configurations, music, art and stories. Below are the active Houston area groups:</p>
+                
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>DC 713 Discord</h3>
+                    <p>Mostly inner loop, but open to all!</p>
+                    <a href="https://discord.gg/fgb2qTYNqh">[ ACCESS DC713 ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>DC 281 Discord</h3>
+                    <p>South Houston, Pearland, Pasadena, League City Webster, and all others</p>
+                    <a href="https://discord.gg/jJC3ud5">[ ACCESS DC281 ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>HAHA Discord</h3>
+                    <p>Houston Area Hackers Anonymous, open to all please check their page for more info. Please note this link is to the Global Hacker Association and the Houston groups is a sub-channel</p>
+                    <a href="https://discord.gg/eyC4dB3JtU">[ ACCESS HAHA ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>DC 409 Discord</h3>
+                    <p>Galveston, Texas City, and all others</p>
+                    <a href="https://discord.gg/qtDkEZgDJN">[ ACCESS DC409 ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>DC 936 Discord</h3>
+                    <p>Uber North Houston, Humble, Spring, Klein, Tombal, Woodlands and others</p>
+                    <a href="https://discord.gg/Sntr7udaYV">[ ACCESS DC936 ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>Hacking Club</h3>
+                    <p>Meets in Downtown Houston, open to all. Please check their Discord for times.</p>
+                    <a href="https://discord.gg/SW6j4YERnu">[ ACCESS Hacking Club ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>Houston 2600</h3>
+                    <p>Please review their site for info</p>
+                    <a href="https://www.hou2600.org/">[ ACCESS 2600 ]</a>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; border: 1px solid var(--term-amber);">
+                    <h3>>Calendar</h3>
+                    <p>Need to see it in a calendar? Check here</p>
+                    <a href="https://dc281.org/DC281-cal">[ ACCESS calendar ]</a>
+                </div>
+
+
+                
+                <p style="margin-top: 2rem;">Awaiting input...<span class="cursor"></span></p>
+            </section>
+        </main>
+
+        <footer>
+            <p>v1.0.0 (c) 2026. DC 713 by ScrewedUp.tech </p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple routing script to handle simulated pages
+        function switchTab(tabId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Deactivate all buttons
+            const buttons = document.querySelectorAll('#main-nav button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Highlight selected button
+            const targetButton = document.getElementById('btn-' + tabId);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
